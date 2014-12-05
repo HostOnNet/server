@@ -24,6 +24,7 @@ apt-get -y install gimp
 apt-get -y install filezilla
 apt-get -y install vim
 apt-get -y install vino
+apt-get -y install imagemagick
 
 # Install chrome
 
