@@ -48,9 +48,16 @@ a2enmod rewrite
 apt-get -y install php5 php5-cli php5-curl php5-gd php5-mysql php5-imagick php5-imap php5-mcrypt php5-json
 php5enmod mcrypt
 
+/bin/sed -i "s/^display_errors = Off/display_errors = On/g" /etc/php5/apache2/php.ini
+/bin/sed -i "s/^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = E_ALL/g" /etc/php5/apache2/php.ini
+
 # Install MySQL 
 
 apt-get -y install mysql-server-5.5
+
+# Install phpMyAdmin
+
+apt-get -y install phpmyadmin
 
 # Restart Apache
 
