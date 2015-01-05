@@ -192,6 +192,8 @@ if has('mouse')
     set mouse=a
 endif
 
+set mouse=
+
 " Tab completion
 set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
@@ -378,3 +380,10 @@ function! ToggleFolding()
 endfunction
 
 map <Leader>tf :call ToggleFolding()<CR>
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
+
+" wrap lines. http://vimcasts.org/episodes/soft-wrapping-text/
+set wrap linebreak nolist
