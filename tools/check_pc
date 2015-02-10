@@ -1,0 +1,64 @@
+#!/usr/bin/python
+
+import re
+import socket
+import os
+import subprocess
+
+meminfo = open('/proc/meminfo').read();
+matched = re.search(r'MemTotal:\s+(\d+)', meminfo)
+
+if matched:
+	mem_total_kB = int(matched.groups()[0])
+else:
+	mem_total_kB = 0;
+
+if mem_total_kB == 6102384:
+	print "[OK] Memory"
+else:
+	print "[FAIL] Memory"
+
+# check if internet OK
+
+internetHost = socket.gethostbyaddr('8.8.8.8')
+
+if internetHost[0] == 'google-public-dns-a.google.com':
+    print "[OK] Internet"
+else:
+    print "[ERROR] Internet", internetHost[0]
+
+# check HDD
+
+driver_ok = 1
+
+if not os.path.exists('/home/boby/disks/part_data/learn/'):
+    driver_ok = 0
+
+if not os.path.exists('/mnt/backup_win/kav/'):
+    driver_ok = 0
+
+if driver_ok:
+   print "[OK] Drive"
+else:
+    print "[ERROR] Drive"
+
+# check sound device
+
+num_sound_devices = 0
+sound_devices = subprocess.check_output(['/usr/bin/aplay', '-l'])
+sound_devices_only = sound_devices.split("\n")
+
+for my_sound_device in sound_devices_only:
+    matched = re.search(r'card(.+)', my_sound_device)
+    if matched:
+        #print matched.groups()[0]
+        num_sound_devices = num_sound_devices + 1
+
+if num_sound_devices == 3:
+    print "[OK] Sound Devices found =", num_sound_devices
+else:
+    print "[ERROR] Not all sound devices listed."
+
+# check DVD
+
+print "[MANUAL] Put a DVD in drive and see if it working."
