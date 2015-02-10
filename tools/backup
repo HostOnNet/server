@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Run backup everyday 1 PM
+# 0 13 * * * /home/boby/www/server/tools/backup >/dev/null 2>&1
+
+/usr/bin/notify-send "Backup Started" "Backing up work folder."
+/usr/bin/rsync -vrplogDtH /home/boby/work/ /home/boby/disks/part_data/backup/work/
+/usr/bin/notify-send "Backup Started" "Backing up www folder."
+/usr/bin/rsync -vrplogDtH /home/boby/www/ /home/boby/disks/part_data/backup/www/
+/usr/bin/notify-send "Backup Finished" "Backup finished for www and work folder."
+echo `date +"%F %H:%I"` Backup finished. >> /home/boby/backup_log.txt
+/home/boby/utils/cpu/cpu_temp
