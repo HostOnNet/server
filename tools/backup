@@ -9,4 +9,8 @@
 /usr/bin/rsync -vrplogDtH /home/boby/www/ /home/boby/disks/part_data/backup/www/
 /usr/bin/notify-send "Backup Finished" "Backup finished for www and work folder."
 echo `date +"%F %H:%I"` Backup finished. >> /home/boby/backup_log.txt
-/home/boby/utils/cpu/cpu_temp
+
+#Open Backup log on sublime text, so you can see it.
+/usr/bin/subl /home/boby/backup_log.txt
+
+/home/boby/www/server/tools/pc_temp
