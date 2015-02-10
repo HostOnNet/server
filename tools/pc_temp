@@ -1,0 +1,69 @@
+#!/usr/bin/php
+<?php
+
+/*
+
+Run Every 30 minutes with cronjob
+
+0,30 * * * * /home/boby/www/server/tools/pc_temp
+
+Table Structure.
+
+CREATE TABLE IF NOT EXISTS `logs` (
+`id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `cpu_0` float NOT NULL,
+  `cpu_1` float NOT NULL,
+  `cpu_2` float NOT NULL,
+  `cpu_3` float NOT NULL,
+  `gpu_0` float NOT NULL
+);
+
+*/
+
+
+exec("/usr/bin/sensors", $output);
+
+$cpuTemp = findCpuTemp($output);
+$gpuTemp = findGpuTemp($output);
+
+
+$link = mysql_connect("localhost","root","flashwebhost") or die("Unable to connect to mysql");
+$db = mysql_select_db("pc_monitor");
+$sql = "INSERT INTO `logs` SET
+`created_at`=NOW(),
+`cpu_0`=" . $cpuTemp[0] . ",
+`cpu_1`=" . $cpuTemp[1] . ",
+`cpu_2`=" . $cpuTemp[2] . ",
+`cpu_3`=" . $cpuTemp[3] . ",
+`gpu_0`=" .  $gpuTemp . ";";
+
+echo $sql;
+echo "\n=================================================\n";
+echo implode("\n", $output);
+echo "\n";
+
+
+mysql_query($sql);
+
+function findCpuTemp($output) {
+    $cpuTemp = [];
+
+    foreach ($output as $line) {
+        if (preg_match('/Core (\d):\s+\+([\d\.]+).*/',$line, $match)) {
+            //echo "matched => $line\n";
+            //print_r($match);
+            $cpuTemp[$match[1]] = $match[2];
+        }
+    }
+
+    return $cpuTemp;
+}
+
+function findGpuTemp($output) {
+    foreach ($output as $line) {
+        if (preg_match('/temp1:\s+\+([\d\.]+)°C  \(.*\)/',$line, $match)) {
+            return $match[1];
+        }
+    }
+}
