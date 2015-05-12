@@ -2,6 +2,24 @@
 
 # Used to setup web developer PC at HostOnNet.com
 
+#remove unwanted  software
+
+apt-get remove -y totem
+apt-get remove -y rhythmbox
+apt-get remove -y thunderbird
+apt-get remove -y banshee
+apt-get remove -y brasero tomboy simple-scan
+apt-get remove -y mintupdate mintnanny mintbackup
+apt-get autoremove -y unity-lens-shopping
+apt-get autoremove -y unity-lens-music
+apt-get autoremove -y unity-lens-photos
+apt-get autoremove -y unity-lens-video
+apt-get remove -y gnome-orca
+
+# remove solitaire game
+apt-get remove -y aisleriot
+
+
 add-apt-repository ppa:webupd8team/sublime-text-3 -y
 
 apt-get update
@@ -9,6 +27,7 @@ apt-get -y upgrade
 
 #install required software
 
+apt-get -y install openssh-server
 apt-get -y install wget
 apt-get -y install curl
 apt-get -y install nmap
@@ -34,6 +53,8 @@ if [ ! -f /etc/apt/sources.list.d/google-chrome.list ]; then
     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 fi
 
+apt-get update
+
 apt-get -y install google-chrome-stable
 
 sed -i 's/firefox.desktop/google-chrome.desktop/g' /etc/gnome/defaults.list
@@ -52,7 +73,7 @@ php5enmod mcrypt
 /bin/sed -i "s/^display_errors = Off/display_errors = On/g" /etc/php5/apache2/php.ini
 /bin/sed -i "s/^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = E_ALL/g" /etc/php5/apache2/php.ini
 
-# Install MySQL 
+# Install MySQL
 
 apt-get -y install mysql-server-5.5
 
